@@ -1,10 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FoodCollection.Models;
+using Twilio.Types;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace FoodCollection.Controllers
 {
     public class DashboardController : Controller
     {
+
+        public IActionResult TestingTwilio()
+        {
+            var accountSid = "ACe455f162e0ca4f29dde0ae566d39e6e7";
+            var authToken = "bf430cb04e11d29eb306df123482cc67";
+            TwilioClient.Init(accountSid, authToken);
+
+            var message = MessageResource.Create(
+                body: "Hello from Twilio!",
+                from: new Twilio.Types.PhoneNumber("+13159037147"), // Twilio number
+                to: new Twilio.Types.PhoneNumber("+6586577651")     // Recipient number
+            );
+
+            return View();
+        }
         public IActionResult Index()
         {
             var report = GenerateMockMonthlyPayments();
