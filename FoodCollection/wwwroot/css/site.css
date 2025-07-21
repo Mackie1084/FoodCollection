@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.paymentreport{
+    margin:0;
+    padding:0;
+    position:absolute;
+    width:500px;
+    height:500px;
+}
