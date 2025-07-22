@@ -1,25 +1,46 @@
-﻿@model List<FoodCollection.Models.Payment>
+﻿@model FoodCollection.Models.DashboardVM
 
 @{
-    ViewData["Title"] = "Payment Chart";
-    var dateLabels = string.Join(",", Model.Select(p => $"'{p.Date.ToString("yyyy-MM-dd")}'"));
-    var amountData = string.Join(",", Model.Select(p => p.Amount));
+    ViewData["Title"] = "Dashboard";
+    var dateLabels = string.Join(",", Model.payments.Select(p => $"'{p.Date.ToString("yyyy-MM-dd")}'"));
+    var amountData = string.Join(",", Model.payments.Select(p => p.Amount));
+    var foodItems = string.Join(",", Model.fooditems.Select(p => p.FoodItemId));
+    var countfoodItems = string.Join(",", Model.fooditems.Select(p => p.countofFoodItems));
 }
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
+    <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="~css/site.css"></script>
+    <style>
+        .paymentstyle{
+            top:100px;
+            height:330px;
+            width:700px;
+            position:absolute;
+            border-color:black;
+            border: solid 2px;
+            
+        }
+        .fooditemstyle{
+            top:100px;
+            left:1000px;
+            height:330px;
+            width:700px;
+            position:absolute;
+            border-color: black;
+            border: solid 2px;
+         
+        }
+    </style>
 </head>
 <body>
-    <div class="paymentreport">
-
-
+    <!--Payment Chart-->
+    <div class="paymentstyle">
     <div style="width: 80%; max-width: 700px; margin: auto;">
-        <h2>@ViewData["Title"]</h2>
+        <h2>Payment Report</h2>
         <canvas id="paymentChart"></canvas>
 
         <script>
@@ -31,8 +52,10 @@
                     datasets: [{
                         label: 'Payment Amount',
                         data: [@Html.Raw(amountData)],
-                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
+                        // backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        // borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor:'#FF6384',
+                            borderColor:'#fff',
                         borderWidth: 1
                     }]
                 },
@@ -63,7 +86,67 @@
             });
         </script>
     </div>
-
     </div>
+
+    <!--Food Item Chart-->
+
+    <div class="fooditemstyle">
+        <div style="width: 80%; max-width: 700px; margin: auto;">
+            <h2>Food Item Count Report</h2>
+            <canvas id="foodItemChart"></canvas>
+
+            <script>
+                const ctv = document.getElementById('foodItemChart').getContext('2d');
+                const chartctv = new Chart(ctv, {
+                    type: 'bar',
+                    data: {
+                        labels: [@Html.Raw(foodItems)],
+                        datasets: [{
+                            label: 'Food Item Count',
+                            data: [@Html.Raw(countfoodItems)],
+                            backgroundColor:'#36A2EB',
+                            borderColor: '#fff',
+                            // backgroundColor: [
+                            // '#FF6384', // red
+                            // '#FFCE56', // yellow
+                            // '#36A2EB'  // blue
+                            // ],
+                            // borderColor: [
+                            //     '#fff',
+                            //     '#fff',
+                            //     '#fff'
+                            // ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Food Item Count'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Total count of Food Items'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'FoodItem Id'
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+
 </body>
 </html>

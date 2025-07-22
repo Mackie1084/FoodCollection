@@ -3,6 +3,7 @@ using FoodCollection.Models;
 using Twilio.Types;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FoodCollection.Controllers
 {
@@ -25,10 +26,99 @@ namespace FoodCollection.Controllers
         }
         public IActionResult Index()
         {
-            var report = GenerateMockMonthlyPayments();
-            return View(report);
+            //var report = GenerateMockMonthlyPayments();
+            //return View(report);
+            var dvm = new DashboardVM();
+            dvm.payments = GenerateMockMonthlyPayments();
+            dvm.fooditems = GetFoodItemCount();
+            return View(dvm);
         }
 
+
+        public List<FoodItemVM> GetFoodItemCount()
+        {
+            var lstBookPickupDetails = new List<BookPickupDetail>();
+
+            lstBookPickupDetails.Add(new BookPickupDetail
+            {
+                BookPickupDetailId = 1,
+                QuantityLeft = 3,
+                ExpiryDate = DateOnly.Parse("2025-01-01"),
+                BookPickupId=1,
+                FoodItemId = 1,
+
+            });
+            lstBookPickupDetails.Add(new BookPickupDetail
+            {
+                BookPickupDetailId = 2,
+                QuantityLeft = 3,
+                ExpiryDate = DateOnly.Parse("2025-01-01"),
+                BookPickupId = 2,
+                FoodItemId = 2,
+
+            });
+            lstBookPickupDetails.Add(new BookPickupDetail
+            {
+                BookPickupDetailId = 3,
+                QuantityLeft = 3,
+                ExpiryDate = DateOnly.Parse("2025-01-01"),
+                BookPickupId = 3,
+                FoodItemId = 2,
+
+            });
+            lstBookPickupDetails.Add(new BookPickupDetail
+            {
+                BookPickupDetailId = 4,
+                QuantityLeft = 3,
+                ExpiryDate = DateOnly.Parse("2025-01-01"),
+                BookPickupId = 4,
+                FoodItemId = 3,
+
+            });
+            lstBookPickupDetails.Add(new BookPickupDetail
+            {
+                BookPickupDetailId =5,
+                QuantityLeft = 3,
+                ExpiryDate = DateOnly.Parse("2025-01-01"),
+                BookPickupId = 5,
+                FoodItemId = 3,
+
+            });
+            lstBookPickupDetails.Add(new BookPickupDetail
+            {
+                BookPickupDetailId = 6,
+                QuantityLeft = 3,
+                ExpiryDate = DateOnly.Parse("2025-01-01"),
+                BookPickupId = 6,
+                FoodItemId = 3,
+
+            });
+            lstBookPickupDetails.Add(new BookPickupDetail
+            {
+                BookPickupDetailId = 7,
+                QuantityLeft = 3,
+                ExpiryDate = DateOnly.Parse("2025-01-01"),
+                BookPickupId = 7,
+                FoodItemId = 3,
+
+            });
+            var count = lstBookPickupDetails.GroupBy(mp => mp.FoodItemId)
+                        .Select(g => new
+                        {
+                            FoodItemId = g.Key,
+                            Count = g.Count()
+                        });
+            var fooditemvm = new List<FoodItemVM>();
+            foreach(var item in count)
+            {
+                fooditemvm.Add(new FoodItemVM
+                {
+                    FoodItemId = item.FoodItemId,
+                    countofFoodItems = item.Count
+                });
+            }
+            return fooditemvm.OrderByDescending(fd => fd.countofFoodItems).ToList();
+        }
 
         public List<Payment> GenerateMockMonthlyPayments()
         {
