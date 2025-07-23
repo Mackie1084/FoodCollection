@@ -29,7 +29,7 @@ namespace FoodCollection.Controllers
             //var report = GenerateMockMonthlyPayments();
             //return View(report);
             var dvm = new DashboardVM();
-            dvm.payments = GenerateMockMonthlyPayments();
+            dvm.payments =  GenerateMockMonthlyPayments();
             dvm.fooditems = GetFoodItemCount();
             return View(dvm);
         }
