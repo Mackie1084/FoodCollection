@@ -31,6 +31,7 @@ namespace FoodCollection.Controllers
             var dvm = new DashboardVM();
             dvm.payments =  GenerateMockMonthlyPayments();
             dvm.fooditems = GetFoodItemCount();
+            ViewBag.TotalSales = dvm.payments.Sum(p => p.Amount).ToString("C2");
             return View(dvm);
         }
 

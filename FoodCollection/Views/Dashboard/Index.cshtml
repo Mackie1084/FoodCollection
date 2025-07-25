@@ -15,30 +15,44 @@
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        .tSalesstyle{
+            top:100px;  
+            height:100px;
+            width:200px;
+            background-color:darkgray;
+            position:absolute;
+            border:solid 1px;
+
+        }
         .paymentstyle{
-            top:100px;
+            top:250px;
             height:330px;
             width:700px;
             position:absolute;
             border-color:black;
             border: solid 2px;
-            border-radius:2%;
+            border-radius:1%;
             
         }
         .fooditemstyle{
-            top:100px;
+            top:250px;
             left:1100px;
             height:330px;
             width:700px;
             position:absolute;
             border-color: black;
             border: solid 2px;
-            border-radius:2%;
+            border-radius:1%;
          
         }
     </style>
 </head>
 <body>
+    <!--Total Sales-->
+    <div class="tSalesstyle">
+        <h1>Total Sales</h1>
+        <h2>@ViewBag.TotalSales</h2>
+    </div>
     <!--Payment Chart-->
     <div class="paymentstyle">
     <div style="width: 80%; max-width: 700px; margin: auto;">
